@@ -1,0 +1,24 @@
+version: '3.8'  # Versión de la especificación de Docker Compose
+
+services:
+  postgres:
+    image: postgres:latest  # Imagen oficial de PostgreSQL, siempre utiliza la última versión estable
+    container_name: eccomerce_portfolio  # Nombre del contenedor para facilitar su identificación
+    environment:
+      POSTGRES_USER: developer  # Usuario por defecto para la base de datos
+      POSTGRES_PASSWORD: developer  # Contraseña asociada al usuario
+      POSTGRES_DB: developer # Nombre de la base de datos que se creará al iniciar el contenedor
+    ports:
+      - "5432:5432"  # Mapea el puerto 5432 del contenedor al puerto 5432 de la máquina host
+    volumes:
+      - postgres_data:/var/lib/postgresql/data  # Monta el directorio de datos de PostgreSQL en un volumen persistente
+    restart: always  # Asegura que el contenedor se reinicie automáticamente si falla
+    healthcheck:  # Verifica si el servicio de PostgreSQL está disponible y listo para aceptar conexiones
+      test: ["CMD-SHELL", "pg_isready -U developer"]  # Comando utilizado para realizar la verificación
+      interval: 30s  # Intervalo entre cada chequeo de salud
+      timeout: 10s  # Tiempo máximo que se esperará para que el chequeo de salud responda
+      retries: 5  # Número de intentos antes de considerar que el contenedor no está saludable
+
+volumes:
+  postgres_data:
+    driver: local  # Define el volumen como local, para que los datos se almacenen en el disco de la máquina host
