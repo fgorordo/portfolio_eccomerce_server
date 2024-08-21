@@ -1,11 +1,10 @@
 import { Module } from '@nestjs/common';
-import { UsersModule } from './users/users.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule } from '@nestjs/config';
+import { AuthModule } from './auth/auth.module';
 
-@Module({
+@Module({ 
   imports: [
-    UsersModule,
     ConfigModule.forRoot(),
     TypeOrmModule.forRoot({
       type: "postgres",
@@ -18,7 +17,8 @@ import { ConfigModule } from '@nestjs/config';
       // DEV
       autoLoadEntities: true,
       synchronize: true,
-    })
+    }),
+    AuthModule
   ],
   controllers: [],
   providers: [],

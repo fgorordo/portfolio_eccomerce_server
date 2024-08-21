@@ -11,7 +11,7 @@ services:
     ports:
       - "5432:5432"  # Mapea el puerto 5432 del contenedor al puerto 5432 de la máquina host
     volumes:
-      - postgres_data:/var/lib/postgresql/data  # Monta el directorio de datos de PostgreSQL en un volumen persistente
+      - ./postgres_data:/var/lib/postgresql/data  # Monta el directorio de datos de PostgreSQL en un volumen persistente
     restart: always  # Asegura que el contenedor se reinicie automáticamente si falla
     healthcheck:  # Verifica si el servicio de PostgreSQL está disponible y listo para aceptar conexiones
       test: ["CMD-SHELL", "pg_isready -U developer"]  # Comando utilizado para realizar la verificación
