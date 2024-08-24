@@ -1,1 +1,1 @@
-export * from "./http-responses.interface";
+export * from './database-error-codes.interface';

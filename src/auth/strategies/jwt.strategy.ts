@@ -1,11 +1,11 @@
-import { ConfigService } from "@nestjs/config";
-import { PassportStrategy } from "@nestjs/passport";
-import { ExtractJwt, Strategy } from "passport-jwt";
-import { Repository } from "typeorm";
-import { User } from "../entities";
-import { InjectRepository } from "@nestjs/typeorm";
-import { UnauthorizedException } from "@nestjs/common";
-import { JWTPayload } from "../interfaces";
+import { ConfigService } from '@nestjs/config';
+import { PassportStrategy } from '@nestjs/passport';
+import { ExtractJwt, Strategy } from 'passport-jwt';
+import { Repository } from 'typeorm';
+import { User } from '../entities';
+import { InjectRepository } from '@nestjs/typeorm';
+import { UnauthorizedException } from '@nestjs/common';
+import { JWTPayload } from '../interfaces';
 
 export class JWTStrategy extends PassportStrategy(Strategy) {
     constructor(

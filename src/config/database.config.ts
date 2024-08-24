@@ -1,6 +1,6 @@
-import { registerAs } from "@nestjs/config";
-import { TypeOrmModuleOptions } from "@nestjs/typeorm";
-import { NodeEnvs } from "./interface";
+import { registerAs } from '@nestjs/config';
+import { TypeOrmModuleOptions } from '@nestjs/typeorm';
+import { NodeEnvs } from './interface';
 
 export default registerAs('database', (): TypeOrmModuleOptions => ({
     type: 'postgres',

@@ -1,5 +1,5 @@
 import { Reflector } from '@nestjs/core';
-import { CanActivate, ExecutionContext, Injectable, BadRequestException, ForbiddenException, UnauthorizedException } from '@nestjs/common';
+import { CanActivate, ExecutionContext, Injectable, UnauthorizedException } from '@nestjs/common';
 import { Observable } from 'rxjs';
 import { META_ROLES } from '../interfaces';
 import { User } from '../entities';

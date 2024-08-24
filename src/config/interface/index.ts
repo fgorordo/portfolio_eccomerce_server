@@ -1,1 +1,1 @@
-export * from "./envs.interface";
+export * from './envs.interface';

@@ -1,2 +1,2 @@
-export * from "./loggin.interceptor";
-export * from "./http-response-normalizer.interceptor";
+export * from './loggin.interceptor';
+export * from './http-response-normalizer.interceptor';
