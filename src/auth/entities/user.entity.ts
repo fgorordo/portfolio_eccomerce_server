@@ -1,5 +1,6 @@
 import { BeforeInsert, BeforeUpdate, Column, CreateDateColumn, Entity, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm';
 import { hashPassword } from '../utils';
+import { UserRoles } from '../interfaces';
 
 @Entity('users')
 export class User {
@@ -16,8 +17,11 @@ export class User {
     @Column('text', {select: false})
     password: string;
 
-    @Column('bool', {select: false, default: true})
+    @Column('bool', {default: true})
     isActive: boolean;
+
+    @Column('text', {array: true, default:[UserRoles.USER]})
+    roles: UserRoles[]
 
     @CreateDateColumn({type: 'timestamp', select: false})
     cratedAt: Date;
@@ -34,6 +38,7 @@ export class User {
     setDefaultValues() {
         if (this.isActive == undefined) {
             this.isActive = true;
+            this.roles = [UserRoles.USER];
         };
     }
     
