@@ -21,7 +21,7 @@ import { JwtModule } from '@nestjs/jwt';
       inject: [ConfigService],
       useFactory: (configService: ConfigService) => {
         return {
-          secret: configService.get('JWT_SECRET'),
+          secret: configService.get('jwt.secret'),
           signOptions: {
             expiresIn: '1d',
           },

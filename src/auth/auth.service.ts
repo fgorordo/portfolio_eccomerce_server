@@ -1,14 +1,16 @@
 import { BadRequestException, Injectable, UnauthorizedException } from '@nestjs/common';
-
 import { CreateUserDto, LoginUserDto } from './dto';
-import { randomInt } from 'crypto';
-import { cleanUserData, hashPassword, validateCredentials } from './utils';
-import { AuthMessages, UserModuleApiResponse } from './interfaces';
+import { validateCredentials } from './utils';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { User } from './entities';
 import { JwtService } from '@nestjs/jwt';
 
+
+interface http {
+  message: string;
+  token: string;
+}
 @Injectable()
 export class AuthService {
 
@@ -17,52 +19,42 @@ export class AuthService {
     private usersRespository: Repository<User>,
 
     private readonly jwtService: JwtService,
-  ) {}
+  ) { }
 
-  async create(createUserDto: CreateUserDto): Promise<UserModuleApiResponse> {
+  async create(createUserDto: CreateUserDto): Promise<any> {
 
     const candidate = this.usersRespository.create(createUserDto);
     const user = await this.usersRespository.save(candidate);
 
     return {
-      message: AuthMessages.ACCOUNT_CREATED,
-      data: {
-        email: user.email,
-        fullName: user.fullName,
-        authToken: this.jwtService.sign({id: user.id}),    
-        refreshToken: this.jwtService.sign({id: user.id}),   
-      },
-    };
+      token: await this.signJWT(user),
+    }
   }
 
-  async login(loginUserDto: LoginUserDto): Promise<UserModuleApiResponse> {
+  async login(loginUserDto: LoginUserDto): Promise<any> {
 
     const user = await this.usersRespository.findOne({
-      where:{
-        email: loginUserDto.email
-      },
-      select:
-        {
-          password: true,
-          email: true,
-          fullName: true,
-          id: true
-        }
-      });
+      where: { email: loginUserDto.email },
+      select: { password: true, id: true },
+    });
 
-    if (!user) 
-      throw new UnauthorizedException(AuthMessages.INVALID_CREDENTIALS);
+    if (!user)
+      throw new BadRequestException('Invalid Credentials');
 
     if (!await validateCredentials(loginUserDto.password, user.password))
-      throw new UnauthorizedException(AuthMessages.INVALID_CREDENTIALS);
+      throw new BadRequestException('Invalid Credentials');
+
+    return {token: await this.signJWT(user)}
+  }
+
+
+  refresh(user: User): any {
     return {
-      ok: true,
-      data: {
-        email: user.email,
-        fullName: user.fullName,
-        authToken: this.jwtService.sign({id: user.id}),    
-        refreshToken: this.jwtService.sign({id: user.id}),   
-      },
-    };
+      data: user,
+    }
+  }
+
+  private signJWT(user: User): Promise<string> {
+    return this.jwtService.signAsync({sub: user.id})
   }
 }

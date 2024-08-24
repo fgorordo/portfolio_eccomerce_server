@@ -5,9 +5,9 @@ services:
     image: postgres:latest  # Imagen oficial de PostgreSQL, siempre utiliza la última versión estable
     container_name: eccomerce_portfolio  # Nombre del contenedor para facilitar su identificación
     environment:
-      POSTGRES_USER: developer  # Usuario por defecto para la base de datos
-      POSTGRES_PASSWORD: developer  # Contraseña asociada al usuario
-      POSTGRES_DB: developer # Nombre de la base de datos que se creará al iniciar el contenedor
+      POSTGRES_USER: ${DB_USERNAME}  # Usuario por defecto para la base de datos
+      POSTGRES_PASSWORD: ${DB_PASSWORD}  # Contraseña asociada al usuario
+      POSTGRES_DB: ${DB_NAME} # Nombre de la base de datos que se creará al iniciar el contenedor
     ports:
       - "5432:5432"  # Mapea el puerto 5432 del contenedor al puerto 5432 de la máquina host
     volumes:
